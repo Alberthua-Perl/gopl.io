@@ -1,10 +1,11 @@
+# Note: define resource type in Kubernetes and OpenShift environment
 apiVersion: v1
 kind: Service
 metadata: 
   labels: 
     name: golang-codeready-workspace
   name: golang-codeready-workspace
-  namespace: codeready-workspace
+  namespace: codeready-workspace  ##CHANGE ME
 spec: 
   ports:
     # the port that this service should serve on
@@ -23,7 +24,7 @@ metadata:
   labels:
     app: golang-codeready-workspace
   name: golang-codeready-workspace
-  namespace: codeready-workspace
+  namespace: codeready-workspace  ##CHANGE ME
 spec:
   replicas: 1
   selector:
@@ -36,8 +37,7 @@ spec:
         app: golang-codeready-workspace
     spec:
       containers:
-      - image: quay-registry.lab.example.com/godev/golang-code-server:v1.1
-        # image also pulled from quay.io/alberthua/golang-code-server:v1.1
+      - image: quay.io/alberthua/golang-code-server:v1.1
         imagePullPolicy: IfNotPresent
         name: golang-codeready-workspace
         ports:
@@ -47,3 +47,8 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+      serviceAccount: golang-codeready-workspace  ##CHANGE ME
+      serviceAccountName: golang-codeready-workspace  ##CHANGE ME
+      # JUST use this file in OpenShift environment:
+      #   1. create service account: $ oc create serviceaccount <name> -n <namespace>
+      #   2. add anyuid scc to service account: $ oc adm policy add-scc-to-user anyuid -z <serviceaccount> -n <namespace>
