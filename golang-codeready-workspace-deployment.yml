@@ -12,11 +12,15 @@ spec:
     - port: 8080
       protocol: TCP
       targetPort: 8080
-      nodePort: 30001
+      #nodePort: 30001
   # label keys and values that must match in order to receive traffic for this service
   selector: 
     app: golang-codeready-workspace
-  type: NodePort
+  #type: NodePort
+  type: ClusterIP
+# Note:
+#   If you don't use previous definition to create service, please use following command to create it:
+#   $ oc expose deployment/golang-codeready-workspace --selector app=golang-codeready-workspace --port 8080 --target-port 8080 --protocol TCP --name gcw
 ---  
 apiVersion: apps/v1
 kind: Deployment
